@@ -1,0 +1,381 @@
+-- create database database-name;
+-- create database new;
+CREATE DATABASE new;
+
+-- delete a database ;
+-- SYNTAX: DROP database database-name;
+DROP DATABASE new;
+
+-- Use database_name; use this command to set the working database
+USE new;
+
+
+-- Create a TABLE ;
+-- SYNTAX: CREATE TABLE table-name(
+--                 col1 DATATYPE,
+--                 col2 DATATYPE);
+CREATE TABLE employee(
+				emp_id int,
+                emp_name char,
+                department char);
+
+
+-- Create a new TABLE from existing table;
+-- SYNTAX: CREATE TABLE new_table_name AS
+-- 				SELECT col1 , col2,....
+-- 				FROM  existing_table_name;
+
+CREATE TABLE depart_data AS
+ 				SELECT emp_name , department
+ 				FROM  employee;
+                
+                
+-- to set a limit on input in a col data we use to set limit to input like phone int(10) so phone can not have
+--  data greater than 10 but it will accept any thing less than 10 of int type
+
+
+-- ("VARCHAR") varchar datatype is used for variable characters it takes characters,int and special characters like for email @
+
+
+-- delete a table ;
+-- 1. DROP -> delete the existing table
+-- SYNTAX: DROP TABLE table_name;
+DROP TABLE depart_data;
+
+-- 2. TRUNCATE -> delete the (row)data inside table but not the table itself
+-- SYNTAX: TRUNCATE TABLE table_name;
+TRUNCATE TABLE employee;
+
+
+-- CREATE -> CREATE
+-- DELETE -> DROP
+-- UPDATE -> ALTER/MODIFY
+
+-- ALTER the table (UPDATE)
+
+-- 1. ADD a Column in a table
+-- SYNTAX: ALTER TABLE table_name
+-- 		   ADD col_name datatype(max_len);
+ALTER TABLE employee
+ ADD salary int;
+ 
+-- 2. DELETE a Column in a table
+-- SYNTAX: ALTER TABLE table_name
+-- 		   DROP col_name;
+ALTER TABLE employee
+ DROP salary; 
+ 
+ -- 3. Change the datatype of that column
+-- SYNTAX: ALTER TABLE table_name
+-- 		   MODIFY  COLUMN col_name new_datatype;   use ALTER instead of MODIFY in Microsoft sql server
+ALTER TABLE employee
+ MODIFY  COLUMN emp_id varchar(100); -- from int to varchar
+ 
+ 
+ -- constraints (to set limitation on input like in password legth etc
+--  CREATE table data1(
+-- 	id int constraint,
+--     Name char constraint
+--  );
+
+
+-- 1) NOT NULL
+CREATE table data1(
+	id int NOT NULL ,
+    Name char
+ );
+ 
+-- Modifying extisting column to set it not null
+
+ALTER TABLE data1
+MODIFY COLUMN Name char NOT NULL;
+
+-- 2) UNIQUE (All data should be deferent , it can be null)
+ALTER TABLE data1
+MODIFY column id int NOT NULL UNIQUE;
+
+-- if using while table declaration
+CREATE table data2(
+	id int NOT NULL ,
+    Name char,
+    Age int,
+    UNIQUE(ID)
+ );
+
+
+-- 3) Primary Key = NOT NULL + UNIQUE
+CREATE table data3(
+	id int NOT NULL ,
+    Name char,
+    Age int,
+    PRIMARY KEY(ID)
+ );
+ 
+ 
+ -- PK for single field
+ ALTER TABLE DATA2
+ ADD PRIMARY KEY(Age);
+ 
+ -- PK for multiple field (put all in a container) (* data1pk is a random name use any)
+  ALTER TABLE DATA1
+ ADD constraint data1pk PRIMARY KEY(Name,ID);
+ 
+ ALter table employee
+ add PRIMARY KEY(emp_id);
+
+ALter table employee
+Modify column emp_name char(100) NOT NULL;
+
+ALter table employee
+Modify column department char(100) NOT NULL;
+ 
+ -- INSERT INTO 
+ -- INSERT INTO table_name(col1,col2,col3...)
+ -- VALUES (1,'EXAM','absabs@gmail.com');
+ INSERT INTO employee(emp_id,emp_name,department)
+ VALUES(100,'Amit','developer');
+ 
+INSERT INTO employee(emp_id,emp_name,department)
+ VALUES
+ (101,'Sahil','Analyst'),
+ (102,'Anuj','developer'),
+ (103,'Shanto','Manager'),
+ (104,'Neeraj','Security'),
+ (105,'Priyanshu','developer');
+ 
+ -- Choose --> SELECT
+ -- All -->  *
+ -- FROM --> FROM
+ -- Diffrent (unique) --> DISTINCT
+ -- condition --> WHERE (BETWEEN ,LIKE)
+ -- operators (AND,OR,NOT) ex. Where cond1 and cond2 or cond3;
+ 
+ Select * From employee;
+ SELECT emp_id,department From employee;
+ 
+ Select DISTINCT department from employee;
+ 
+ Select emp_id From employee Where department='developer'; -- BETWEEN also used 
+ 
+ Create Database University;
+ 
+ use university;
+ 
+ Create Table compsc(
+	id int auto_increment,
+    Name char(100) NOT NULL,
+    Age int,
+    Email varchar(100) unique,
+    Marks float not null,
+    primary key(id)
+    );
+    
+Insert into compsc(Name,Age,Email,Marks)
+Values
+('Sahil',25,'sahilhansa@gmail.com',76.5),
+('Shanto',22,'shantothomas@gmail.com',79.5),
+('Neeraj',24,'neeraj@gmail.com',89.5),
+('Sachin',28,'sachintedulkar@gmail.com',91.5),
+('Amit',21,'amit0905@gmail.com',95.5);
+
+
+Select * from compsc;
+Select id,Name,Marks From compsc Where Marks>90;
+
+-- Deleting the particular data 
+
+Set Sql_Safe_Updates=0;  -- Soft delete and hard delete
+Delete From compsc
+Where Marks = 91.5;
+
+
+-- Order By (Sort) 
+-- Select col1,col2,col3......alter
+-- From table name
+-- Order by col_name;
+
+Select * From compsc Order by Marks; -- for ascending use asc for handling multiple col in order by 
+Select * From compsc Order by Marks Desc; -- for Descending
+
+-- MAX & MIN 
+
+Select MAX(Marks) From compsc;
+
+Select MIN(Marks) From compsc;
+
+Select MIN(Marks) From compsc Where Marks>80;
+
+Select * From compsc Where marks=(Select MAX(MARKS) from compsc);
+
+-- COUNT
+Select Count(Marks) From compsc;
+
+Select Count(Marks) From compsc Where Age>=25;
+
+-- AVG (Average)
+
+Select Avg(Marks) From compsc;
+
+Select Avg(Marks) From Compsc Where Age>=25;
+
+-- SUM
+
+Select SUM(Marks) From compsc;
+
+Select SUM(Marks) From compsc Where Age>22 and Marks<90;
+
+-- Between
+
+Select * From compsc Where Marks Between 80 and 90;
+
+-- not
+
+Select * From compsc Where Marks not Between 80 and 90;
+
+-- Select Count(id) From compsc;
+
+Insert into compsc(Name,Age,Email,Marks)
+Values
+('Bob',25,'Bob9089@hotmail.com',76.5),
+('Sanjay',22,'sanjaysingh@outlook.com',79.5),
+('Nitesh',24,'nitesh@yahoomail.com',89.5),
+('Rick',28,'rick@rediffmail.com',91.5),
+('Nick',21,'nicknine@zohomail.com',95.5);
+
+-- Choose only persons whose mail is gmail
+
+-- LIKE (Pattern) use % and _ for pattern matching _ only one char can be anything while % any no. of char can be anything
+
+Select * From compsc Where Email like '%gmail%';
+
+
+-- Joints On Tables 
+
+Create Database sports;
+
+Use sports;
+
+create table Cricket(
+	player_id int auto_increment,
+    player_name char(100) Not Null,
+    player_role char(100) not null,
+    player_country char(100) not null,
+    primary key(player_id)
+);
+
+
+Insert Into Cricket(player_name,player_role,player_country)
+Values
+('Virat','Batsman','India'),
+('ABD','Batsman','South Africa'),
+('Rachin','Allrounder','Australia'),
+('Kane','Batsman','New Zealand'),
+('Starc','Bowler','Australia');
+
+create table Football(
+	player_id int auto_increment,
+    player_name char(100) Not Null,
+    player_role char(100) not null,
+    player_country char(100) not null,
+    primary key(player_id)
+);
+
+
+Insert Into Football(player_name,player_role,player_country)
+Values
+('L.Messi','St','Argentina'),
+('C. Ronaldo','St','Portugal'),
+('Sunil Chetri','CF','India'),
+('Neymar','W','Brazil'),
+('Pogba','CM','France');
+
+Drop database new;
+Drop Database University;
+Drop Database sports;
+
+Create Database Employee;
+
+Use Employee;
+
+create table employee(
+	e_id int auto_increment,
+    e_name char(100) not null,
+    city char(100) not null,
+    primary key(e_id)
+);
+
+create table department(
+	d_id int auto_increment,
+    d_name char(100) not null,
+    e_id int not null,
+    primary key(d_id)
+);
+
+insert into employee(e_name,city)
+Values
+('Amit','HR'),
+('Sahil','J&K'),
+('Neeraj','RJ'),
+('Shanto','MP'),
+('Anuj','MP'),
+('Priyanshu','UK'),
+('Amalu','WB'),
+('Mihir','AP');
+
+
+insert into department(d_name,e_id)
+Values
+('Accounts',4),
+('Management',6),
+('Development',1),
+('Sales',7),
+('IT',8),
+('R&D',2),
+('Management',3),
+('Accounts',5);
+
+-- Joins when there a relation between the tables
+
+-- #########  Inner Join (Interaction) #######
+
+-- Select col_name(s)
+-- From table_1
+-- Inner Join table_2
+-- ON table_1.col_name=table_2.col_name;
+
+Select employee.*,department.*
+From employee
+Inner Join department
+ON employee.e_id=department.e_id
+order by employee.e_id;
+
+-- Left Outer Join
+
+Select employee.*,department.*
+From employee
+Left Join department
+ON employee.e_id=department.e_id;
+
+-- Right outer join
+
+Select employee.*,department.*
+From employee
+Right Join department
+ON employee.e_id=department.e_id;
+
+
+-- Full outer join (Left outer joun union Right Outer join)
+
+-- Full and Full outer does not work in mysql so we use "UNION" to perform it
+
+Select employee.*,department.*
+From employee
+Left Join department
+ON employee.e_id=department.e_id
+union
+Select employee.*,department.*
+From employee
+Right Join department
+ON employee.e_id=department.e_id;
+
+
